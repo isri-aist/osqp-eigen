@@ -1,0 +1,21 @@
+Source: osqp-eigen
+Priority: optional
+Maintainer: Pierre Gergondet <pierre.gergondet+ppa@gmail.com>
+Standards-Version: 3.9.5
+Section: libs
+Homepage: https://github.com/robotology/osqp-eigen
+Build-Depends: debhelper (>= 9),
+               pkg-config,
+               cmake,
+               doxygen,
+               graphviz,
+               libosqp-dev
+
+Package: libosqp-eigen-dev
+Section: libdevel
+Architecture: any
+Depends: cmake,
+         libosqp-dev,
+         ${shlibs:Depends},
+         ${misc:Depends}
+Description: Simple C++ wrapper for osqp
