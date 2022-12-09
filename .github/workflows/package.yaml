@@ -1,4 +1,4 @@
-name: Package osqp
+name: Package osqp-eigen
 on:
   repository_dispatch:
     types:
