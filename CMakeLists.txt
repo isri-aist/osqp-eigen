@@ -17,7 +17,7 @@ set(OsqpEigen_VERSION "${OsqpEigen_MAJOR_VERSION}.${OsqpEigen_MINOR_VERSION}.${O
 # Set project version
 project(OsqpEigen VERSION ${OsqpEigen_VERSION})
 
-# ouptut paths
+# output paths
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
@@ -78,7 +78,7 @@ include(OsqpEigenDependencies)
 if(NOT CMAKE_CONFIGURATION_TYPES)
     if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING
-        "Choose the type of build, recommanded options are: Debug or Release" FORCE)
+        "Choose the type of build, recommended options are: Debug or Release" FORCE)
     endif()
     set(OSQPEIGEN_BUILD_TYPES "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS ${OSQPEIGEN_BUILD_TYPES})
@@ -103,13 +103,19 @@ set(${LIBRARY_TARGET_NAME}_HDR
   include/OsqpEigen/Settings.hpp
   include/OsqpEigen/Solver.hpp
   include/OsqpEigen/Solver.tpp
+  include/OsqpEigen/Compat.hpp
   include/OsqpEigen/Debug.hpp)
 
 add_library(${LIBRARY_TARGET_NAME} ${${LIBRARY_TARGET_NAME}_SRC} ${${LIBRARY_TARGET_NAME}_HDR})
 target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
+ADD_WARNINGS_CONFIGURATION_TO_TARGETS(PRIVATE TARGETS ${LIBRARY_TARGET_NAME})
+
 target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC osqp::osqp Eigen3::Eigen)
+if(OSQP_IS_V1)
+  target_compile_definitions(${LIBRARY_TARGET_NAME} PUBLIC OSQP_EIGEN_OSQP_IS_V1)
+endif()
 
 add_library(OsqpEigen::OsqpEigen ALIAS OsqpEigen)
 
